@@ -6,10 +6,12 @@ import { Subject } from 'rxjs';
 
 @Injectable()
 export class RecipeService {
+  recipesChanged = new Subject<Recipe[]>();
+
   private recipes: Recipe[] = [
     new Recipe(
-      'Tasty Schnitzel',
-      'A super-tasty Schnitzel - just awesome!',
+      'Spaghetti Bolognese',
+      'A super Spaghetti Bolognese',
       'https://cdn2.cocinadelirante.com/sites/default/files/images/2023/06/espaguettialabolognesa.jpg',
       [new Ingredient('Meat', 5), new Ingredient('Pasta', 100)]
     ),
@@ -34,5 +36,15 @@ export class RecipeService {
 
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
     this.slService.addIngredients(ingredients);
+  }
+
+  addRecipe(recipe: Recipe) {
+    this.recipes.push(recipe);
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  updateRecipe(index: number, newRecipe: Recipe) {
+    this.recipes[index] = newRecipe;
+    this.recipesChanged.next(this.recipes.slice());
   }
 }
