@@ -34,10 +34,12 @@ export class AuthComponent implements OnInit {
     if (!this.authForm.valid) {
       return;
     }
-    this.isLoading = true;
     const email = this.authForm.value.email;
     const password = this.authForm.value.password;
+
     let authObs: Observable<AuthResponseData>;
+
+    this.isLoading = true;
 
     if (this.isLoginMode) {
       authObs = this.authService.login(email, password);
@@ -47,7 +49,7 @@ export class AuthComponent implements OnInit {
 
     authObs.subscribe(
       (responseData) => {
-        this.error = null;
+        console.log(responseData);
         this.isLoading = false;
         this.router.navigate(['/recipes']);
       },
